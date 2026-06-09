@@ -1,31 +1,55 @@
 {% extends "base.html" %}
 {% block title %}Dashboard — SPK KOL{% endblock %}
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <div>
-    <h4 class="fw-bold mb-0">Dashboard</h4>
-    <small class="text-muted">Sistem Pendukung Keputusan Pemilihan KOL Instagram — UMKM F&B Bali</small>
+
+<!-- Hero benefit-led -->
+<div class="card border-0 shadow-sm mb-4 bg-primary-subtle">
+  <div class="card-body p-4">
+    <div class="row align-items-center g-3">
+      <div class="col-md-8">
+        <h3 class="fw-bold mb-2">Temukan Selebgram Bali yang Paling Cocok untuk Promosi Warung & Resto-mu 🍜</h3>
+        <p class="mb-0 text-muted">
+          Sistem ini bantu kamu memilih <strong>{{ total_kol }} selebgram F&amp;B Bali</strong> berdasarkan
+          engagement, kualitas konten, dan kecocokan niche — bukan asal banyak followers.
+          Setelah dapat rekomendasi, kamu bisa langsung DM mereka di Instagram.
+        </p>
+      </div>
+      <div class="col-md-4 text-md-end text-center">
+        <a href="/cari" class="btn btn-primary btn-lg shadow-sm">
+          Cari Selebgram Sekarang &rarr;
+        </a>
+      </div>
+    </div>
   </div>
-  <a href="/cari" class="btn btn-primary">Mulai Pencarian</a>
 </div>
 
+<!-- 3-step onboarding -->
 <div class="row g-3 mb-4">
   <div class="col-md-4">
-    <div class="card stat-card text-center p-3">
-      <div class="text-muted small mb-1">Total KOL dalam Database</div>
-      <div class="display-5 fw-bold text-primary">{{ total_kol }}</div>
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <div class="step-num mx-auto mb-2">1</div>
+        <h6 class="fw-bold">Atur Yang Penting Buatmu</h6>
+        <p class="small text-muted mb-0">Geser pengaturan ke yang paling kamu butuhkan, atau pakai preset siap pakai (viral, estetik, F&amp;B spesialis, dll).</p>
+      </div>
     </div>
   </div>
   <div class="col-md-4">
-    <div class="card stat-card text-center p-3">
-      <div class="text-muted small mb-1">Total Sesi Kalkulasi</div>
-      <div class="display-5 fw-bold text-success">{{ total_sesi }}</div>
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <div class="step-num mx-auto mb-2">2</div>
+        <h6 class="fw-bold">Sistem Ranking Otomatis</h6>
+        <p class="small text-muted mb-0">Dari {{ total_kol }} selebgram, sistem akan urutkan dari yang paling cocok ke kurang cocok untuk bisnismu.</p>
+      </div>
     </div>
   </div>
   <div class="col-md-4">
-    <div class="card stat-card text-center p-3">
-      <div class="text-muted small mb-1">Kategori Niche Tersedia</div>
-      <div class="display-5 fw-bold text-warning">{{ total_niche }}</div>
+    <div class="card h-100 shadow-sm">
+      <div class="card-body text-center">
+        <div class="step-num mx-auto mb-2">3</div>
+        <h6 class="fw-bold">Pilih &amp; DM Langsung</h6>
+        <p class="small text-muted mb-0">Lihat detail tiap selebgram, lalu klik tombol Instagram untuk hubungi mereka langsung lewat DM.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -33,7 +57,7 @@
 {% if preview %}
 <div class="card shadow-sm">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-semibold">Preview 5 KOL Teratas — Sesi Terakhir</span>
+    <span class="fw-semibold">Pencarian Terakhirmu — 5 Selebgram Teratas</span>
     {% if last_sesi %}
     <small class="text-muted">{{ last_sesi.filter_niche }} · {{ last_sesi.timestamp.strftime('%d %b %Y %H:%M') }}</small>
     {% endif %}
@@ -76,9 +100,10 @@
   {% endif %}
 </div>
 {% else %}
-<div class="card text-center p-5 text-muted">
-  <p class="mb-3">Belum ada sesi kalkulasi. Mulai pencarian KOL sekarang.</p>
-  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Mulai Pencarian</a>
+<div class="card border-0 bg-light text-center p-5">
+  <div class="mb-2" style="font-size:48px">🔍</div>
+  <p class="mb-3 text-muted">Belum ada pencarian. Yuk mulai cari selebgram pertamamu!</p>
+  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Cari Selebgram Sekarang</a>
 </div>
 {% endif %}
 {% endblock %}

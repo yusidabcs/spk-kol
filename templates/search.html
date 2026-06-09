@@ -1,14 +1,34 @@
 {% extends "base.html" %}
-{% block title %}Cari KOL — SPK{% endblock %}
+{% block title %}Cari Selebgram — SPK{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-8">
-    <h4 class="fw-bold mb-1">Pencarian & Filter KOL</h4>
-    <p class="text-muted small mb-4">Atur filter kandidat dan bobot kriteria, lalu hitung ranking.</p>
+    <h4 class="fw-bold mb-1">Cari Selebgram Bali untuk Bisnismu</h4>
+    <p class="text-muted small mb-4">
+      Atur filter dan pengaturan di bawah, lalu klik tombol untuk mendapat rekomendasi.
+      Tidak tahu mau atur apa? <strong>Pakai preset siap pakai</strong> ⬇️
+    </p>
 
     <form method="post" action="/hitung">
+      <!-- PRESET 1-KLIK -->
+      <div class="card shadow-sm mb-3 border-primary">
+        <div class="card-header fw-semibold bg-primary-subtle">
+          ⚡ Preset Cepat — Klik 1× saja
+        </div>
+        <div class="card-body">
+          <p class="small text-muted mb-2">Pilih sesuai tujuan kampanyemu. Pengaturan di bawah otomatis menyesuaikan.</p>
+          <div class="d-flex flex-wrap gap-2">
+            <span class="preset-chip" data-preset="viral"     data-bobot="0.50,0.15,0.15,0.10,0.10">🔥 Yang Lagi Viral</span>
+            <span class="preset-chip" data-preset="estetik"   data-bobot="0.20,0.45,0.15,0.10,0.10">📸 Konten Estetik</span>
+            <span class="preset-chip" data-preset="fnb"       data-bobot="0.20,0.20,0.45,0.10,0.05">🍜 Spesialis F&amp;B</span>
+            <span class="preset-chip" data-preset="audience"  data-bobot="0.15,0.15,0.15,0.10,0.45">👥 Audience Besar</span>
+            <span class="preset-chip active" data-preset="seimbang" data-bobot="0.35,0.20,0.20,0.15,0.10">⚖️ Seimbang (default)</span>
+          </div>
+        </div>
+      </div>
+
       <div class="card shadow-sm mb-3">
-        <div class="card-header fw-semibold">Filter Kandidat</div>
+        <div class="card-header fw-semibold">Filter Selebgram</div>
         <div class="card-body">
           <div class="mb-3">
             <label class="form-label small fw-semibold">Niche / Kategori Konten</label>
@@ -21,12 +41,12 @@
           </div>
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label small fw-semibold">Min. Followers: <span id="minVal">{{ min_f }}</span></label>
+              <label class="form-label small fw-semibold">Followers Minimal: <span id="minVal">{{ min_f }}</span></label>
               <input type="range" name="min_followers" class="form-range" min="0" max="50000" step="1000" value="{{ min_f }}" oninput="document.getElementById('minVal').textContent=Number(this.value).toLocaleString()">
             </div>
             <div class="col-md-6">
-              <label class="form-label small fw-semibold">Maks. Followers: <span id="maxVal">{% if max_f == 999999 %}Semua{% else %}{{ max_f }}{% endif %}</span></label>
-              <input type="range" name="max_followers" class="form-range" min="1000" max="999999" step="1000" value="{{ max_f }}" oninput="document.getElementById('maxVal').textContent=this.value==999999?'Semua':Number(this.value).toLocaleString()">
+              <label class="form-label small fw-semibold">Followers Maksimal: <span id="maxVal">{% if max_f == 999999 %}Tidak dibatasi{% else %}{{ max_f }}{% endif %}</span></label>
+              <input type="range" name="max_followers" class="form-range" min="1000" max="999999" step="1000" value="{{ max_f }}" oninput="document.getElementById('maxVal').textContent=this.value==999999?'Tidak dibatasi':Number(this.value).toLocaleString()">
             </div>
           </div>
         </div>
@@ -34,16 +54,20 @@
 
       <div class="card shadow-sm">
         <div class="card-header fw-semibold d-flex justify-content-between">
-          <span>Bobot Kriteria</span>
+          <span>Apa yang Paling Penting Buat Kamu?</span>
           <span id="totalBobot" class="badge bg-success">100%</span>
         </div>
         <div class="card-body">
+          <p class="small text-muted mb-3">
+            Geser ke kanan kalau kriteria itu penting buatmu. Geser ke kiri kalau tidak terlalu penting.
+            <strong>Total harus 100%</strong> (sistem akan menyesuaikan otomatis).
+          </p>
           <div class="row g-3">
             {% for k in kriteria %}
             <div class="col-md-6">
               <div class="d-flex justify-content-between">
                 <label class="form-label small fw-semibold mb-1">
-                  {{ k.kode }}: {{ k.nama }}
+                  {{ k.nama }}
                   <span class="text-muted fw-normal">({{ k.satuan }})</span>
                 </label>
                 <span class="small fw-bold text-primary" id="val_{{ k.kode }}">{{ (k.bobot_default*100)|round|int }}%</span>
@@ -58,12 +82,12 @@
             {% endfor %}
           </div>
           <div class="alert alert-info py-2 px-3 small mb-0 mt-3" id="bobotAlert" style="display:none">
-            Total bobot akan dinormalisasi otomatis ke 100%.
+            Total kepentingan akan disamakan ke 100% otomatis.
           </div>
         </div>
         <div class="card-footer">
-          <button type="submit" class="btn btn-primary w-100">
-            Hitung Ranking
+          <button type="submit" class="btn btn-primary w-100 btn-lg">
+            🔍 Cari Rekomendasi Selebgram
           </button>
         </div>
       </div>
@@ -84,6 +108,27 @@ function updateBobot(kode, val) {
   el.textContent = pct + '%';
   el.className = 'badge ' + (Math.abs(pct-100) < 2 ? 'bg-success' : 'bg-warning text-dark');
   document.getElementById('bobotAlert').style.display = Math.abs(pct-100) >= 2 ? 'block' : 'none';
+  // Un-highlight preset bila user manual atur
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
 }
+
+// Preset 1-klik handler
+document.querySelectorAll('.preset-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const bobot = chip.dataset.bobot.split(',').map(parseFloat);
+    const kodes = ['C1','C2','C3','C4','C5'];
+    kodes.forEach((k, i) => {
+      const slider = document.querySelector(`input[name="${k}"]`);
+      slider.value = bobot[i];
+      bobotValues[k] = bobot[i];
+      document.getElementById('val_'+k).textContent = Math.round(bobot[i]*100) + '%';
+    });
+    document.getElementById('totalBobot').textContent = '100%';
+    document.getElementById('totalBobot').className = 'badge bg-success';
+    document.getElementById('bobotAlert').style.display = 'none';
+    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
 </script>
 {% endblock %}

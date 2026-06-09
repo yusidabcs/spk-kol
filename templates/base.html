@@ -31,9 +31,9 @@
     </button>
     <div class="collapse navbar-collapse" id="nav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link {% if request.url.path == '/' %}active{% endif %}" href="/">Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.url.path == '/kol' %}active{% endif %}" href="/kol">Daftar KOL</a></li>
-        <li class="nav-item"><a class="nav-link {% if request.url.path == '/cari' %}active{% endif %}" href="/cari">Cari KOL</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.url.path == '/' %}active{% endif %}" href="/">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.url.path == '/kol' %}active{% endif %}" href="/kol">Semua Selebgram</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.url.path == '/cari' %}active{% endif %}" href="/cari">Cari Selebgram</a></li>
         <li class="nav-item"><a class="nav-link {% if request.url.path.startswith('/riwayat') %}active{% endif %}" href="/riwayat">Riwayat</a></li>
       </ul>
     </div>

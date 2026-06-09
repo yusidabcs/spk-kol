@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Daftar KOL — SPK{% endblock %}
+{% block title %}Semua Selebgram — SPK{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <div>
-    <h4 class="fw-bold mb-1">Daftar KOL Terdaftar</h4>
-    <p class="text-muted small mb-0">Total <strong>{{ kol_list|length }}</strong> KOL pada hasil filter.</p>
+    <h4 class="fw-bold mb-1">Semua Selebgram di Database</h4>
+    <p class="text-muted small mb-0">Daftar <strong>{{ kol_list|length }}</strong> selebgram (sebelum di-ranking). Untuk dapat rekomendasi, klik <a href="/cari">Cari Selebgram</a>.</p>
   </div>
 </div>
 
@@ -94,7 +94,7 @@
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="12" class="text-center text-muted py-4">Tidak ada KOL yang sesuai filter.</td></tr>
+        <tr><td colspan="12" class="text-center text-muted py-4">Tidak ada selebgram yang sesuai filter.</td></tr>
         {% endfor %}
       </tbody>
     </table>

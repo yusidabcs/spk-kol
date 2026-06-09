@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Detail @{{ kol.username }} — SPK{% endblock %}
 {% block content %}
-<a href="{% if sesi_id %}/hasil/{{ sesi_id }}{% else %}/{% endif %}" class="btn btn-outline-secondary btn-sm mb-3">Kembali</a>
+<a href="{% if sesi_id %}/hasil/{{ sesi_id }}{% else %}/{% endif %}" class="btn btn-outline-secondary btn-sm mb-3">← Kembali ke Daftar</a>
 
 {% if kol %}
 <div class="row g-4">
@@ -16,15 +16,15 @@
         <h5 class="fw-bold">@{{ kol.username }}</h5>
         <span class="badge niche-badge mb-2">{{ kol.niche }}</span>
         <p class="text-muted small">{{ kol.bio }}</p>
-        <a href="{{ kol.instagram_url }}" target="_blank" class="btn btn-outline-primary btn-sm w-100">
-          Buka Instagram
+        <a href="{{ kol.instagram_url }}" target="_blank" class="btn btn-primary w-100">
+          📩 Hubungi via Instagram
         </a>
       </div>
     </div>
     {% if ranking %}
     <div class="card shadow-sm mt-3 border-primary">
       <div class="card-body text-center">
-        <div class="text-muted small mb-1">Peringkat dalam sesi ini</div>
+        <div class="text-muted small mb-1">Peringkat dalam pencarianmu</div>
         <div class="display-4 fw-bold text-primary">#{{ ranking.posisi }}</div>
         <div class="text-muted small">Skor Kecocokan</div>
         <div class="fs-3 fw-bold" title="Nilai WSM: {{ '%.4f'|format(ranking.skor_total) }}">{{ "%.2f"|format(ranking.skor_total * 100) }}%</div>
@@ -68,7 +68,7 @@
 
     {% if ranking %}
     <div class="card shadow-sm">
-      <div class="card-header fw-semibold">Kontribusi Skor per Kriteria</div>
+      <div class="card-header fw-semibold">Kenapa Skor Selebgram Ini Sebesar Itu?</div>
       <div class="card-body">
         {% set items = [
           ("C1","Engagement Rate",ranking.kontribusi_c1,ranking.r_c1),
@@ -86,7 +86,7 @@
           <div class="progress" style="height:12px">
             <div class="progress-bar" style="width:{{ (kontrib / ranking.skor_total * 100)|round|int if ranking.skor_total > 0 else 0 }}%;background:#0d6efd"></div>
           </div>
-          <div class="text-muted" style="font-size:11px">Nilai ternormalisasi: {{ "%.4f"|format(norm) }}</div>
+          <div class="text-muted" style="font-size:11px">Nilai dibanding selebgram lain: {{ "%.0f"|format(norm * 100) }}% dari yang terbaik</div>
         </div>
         {% endfor %}
       </div>

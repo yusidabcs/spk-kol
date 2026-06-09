@@ -1,25 +1,25 @@
 {% extends "base.html" %}
-{% block title %}Hasil Ranking — SPK KOL{% endblock %}
+{% block title %}Hasil Rekomendasi — SPK KOL{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-start mb-3">
   <div>
-    <h4 class="fw-bold mb-0">Hasil Ranking KOL</h4>
+    <h4 class="fw-bold mb-0">Hasil Rekomendasi Selebgram</h4>
     {% if sesi %}
     <small class="text-muted d-block">
-      Sesi #{{ sesi.id }} &nbsp;·&nbsp;
+      Pencarian #{{ sesi.id }} &nbsp;·&nbsp;
       {% if sesi.timestamp %}{{ sesi.timestamp.strftime('%d %b %Y %H:%M') }}{% endif %} &nbsp;·&nbsp;
-      Filter: {{ filter_niche }} &nbsp;·&nbsp;
-      {{ sesi.jumlah_kandidat }} kandidat
+      Niche: {{ filter_niche }} &nbsp;·&nbsp;
+      {{ sesi.jumlah_kandidat }} selebgram diperingkat
     </small>
     <small class="text-muted d-block mt-1">
       <strong>Skor Kecocokan (0–100%)</strong> = hasil Weighted Sum Model — gabungan 5 kriteria sesuai bobot. Makin tinggi, makin direkomendasikan.
     </small>
     <small class="text-muted d-block">
-      Sel C1–C5: <strong>nilai mentah</strong> (baris atas) &middot; <span style="font-size:10px">w·r = kontribusi ke skor</span> (baris bawah, kecil).
+      Tiap kolom kriteria menampilkan: <strong>nilai asli</strong> (baris atas) &middot; <span style="font-size:10px">sumbangan ke skor akhir</span> (baris bawah, kecil).
     </small>
     {% endif %}
   </div>
-  <a href="/cari" class="btn btn-outline-secondary btn-sm">Cari Ulang</a>
+  <a href="/cari" class="btn btn-outline-secondary btn-sm">← Atur Ulang &amp; Cari Lagi</a>
 </div>
 
 <!-- Bobot summary -->
@@ -89,7 +89,7 @@
             {% else %}{{ "{:,}".format(raws[i]|int) }}
             {% endif %}
           </div>
-          <div class="text-muted" style="font-size:10px" title="Kontribusi = bobot × nilai ternormalisasi">w·r = {{ "%.3f"|format(kontribs[i]) }}</div>
+          <div class="text-muted" style="font-size:10px" title="Sumbangan kriteria ini ke skor akhir selebgram">+{{ "%.3f"|format(kontribs[i]) }}</div>
         </td>
         {% endfor %}
         <td>
@@ -107,7 +107,7 @@
 <script>
 document.querySelectorAll('td.text-center').forEach(td => {
   if(td.classList.contains('fw-bold')) {
-    td.title = 'Kontribusi tertinggi pada KOL ini';
+    td.title = 'Kriteria yang paling berpengaruh ke skor selebgram ini';
   }
 });
 </script>
