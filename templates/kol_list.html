@@ -76,7 +76,9 @@
         <tr>
           <td class="text-center text-muted small">{{ loop.index }}</td>
           <td>
-            <a href="https://instagram.com/{{ kol.username }}" target="_blank" class="text-decoration-none fw-semibold">@{{ kol.username }}</a>
+            <a href="https://instagram.com/{{ kol.username }}" target="_blank" class="text-decoration-none fw-semibold d-inline-flex align-items-center">
+              <img src="https://i.pravatar.cc/64?u={{ kol.username }}" alt="" class="avatar-sm rounded-circle">@{{ kol.username }}
+            </a>
           </td>
           <td>{{ kol.nama_lengkap or "—" }}</td>
           <td><span class="badge bg-light text-dark border">{{ kol.niche }}</span></td>

@@ -8,7 +8,11 @@
   <div class="col-md-4">
     <div class="card shadow-sm">
       <div class="card-body text-center">
-        <div class="avatar-circle mx-auto mb-3">{{ kol.username[0]|upper }}</div>
+        <img src="https://i.pravatar.cc/300?u={{ kol.username }}"
+             alt="Avatar @{{ kol.username }}"
+             class="avatar-circle rounded-circle mx-auto mb-2"
+             onerror="this.outerHTML='<div class=&quot;avatar-circle rounded-circle mx-auto mb-2&quot;>{{ kol.username[0]|upper }}</div>'">
+        <div class="text-muted mb-3" style="font-size:10px">Foto: placeholder demo</div>
         <h5 class="fw-bold">@{{ kol.username }}</h5>
         <span class="badge niche-badge mb-2">{{ kol.niche }}</span>
         <p class="text-muted small">{{ kol.bio }}</p>
@@ -22,7 +26,7 @@
       <div class="card-body text-center">
         <div class="text-muted small mb-1">Peringkat dalam sesi ini</div>
         <div class="display-4 fw-bold text-primary">#{{ ranking.posisi }}</div>
-        <div class="text-muted small">Skor Akhir</div>
+        <div class="text-muted small">Skor Kecocokan</div>
         <div class="fs-3 fw-bold" title="Nilai WSM: {{ '%.4f'|format(ranking.skor_total) }}">{{ "%.2f"|format(ranking.skor_total * 100) }}%</div>
         <div class="text-muted" style="font-size:11px">0–100% (WSM)</div>
       </div>

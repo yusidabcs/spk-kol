@@ -12,7 +12,10 @@
       {{ sesi.jumlah_kandidat }} kandidat
     </small>
     <small class="text-muted d-block mt-1">
-      <strong>Skor Akhir (0–100%)</strong> = hasil Weighted Sum Model — gabungan 5 kriteria sesuai bobot. Makin tinggi, makin direkomendasikan.
+      <strong>Skor Kecocokan (0–100%)</strong> = hasil Weighted Sum Model — gabungan 5 kriteria sesuai bobot. Makin tinggi, makin direkomendasikan.
+    </small>
+    <small class="text-muted d-block">
+      Sel C1–C5: <strong>nilai mentah</strong> (baris atas) &middot; <span style="font-size:10px">w·r = kontribusi ke skor</span> (baris bawah, kecil).
     </small>
     {% endif %}
   </div>
@@ -44,7 +47,7 @@
         <th>Username</th>
         <th>Niche</th>
         <th>Followers</th>
-        <th>Skor Akhir</th>
+        <th>Skor Kecocokan</th>
         {% for k in kriteria %}
         <th class="text-center small">{{ k.kode }}<br><span style="font-size:10px;font-weight:normal">{{ k.nama.split()[0] }}</span></th>
         {% endfor %}
@@ -58,7 +61,8 @@
           <span class="rank-badge {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% elif loop.index == 3 %}rank-3{% endif %}">{{ loop.index }}</span>
         </td>
         <td>
-          <a href="https://instagram.com/{{ r.username }}" target="_blank" class="text-decoration-none fw-semibold text-dark">
+          <a href="https://instagram.com/{{ r.username }}" target="_blank" class="text-decoration-none fw-semibold text-dark d-inline-flex align-items-center">
+            <img src="https://i.pravatar.cc/64?u={{ r.username }}" alt="" class="avatar-sm rounded-circle">
             @{{ r.username }}
           </a>
         </td>
@@ -72,11 +76,20 @@
             <strong title="Nilai WSM: {{ '%.4f'|format(r.skor_total) }}">{{ "%.2f"|format(r.skor_total * 100) }}%</strong>
           </div>
         </td>
+        {% set raws = [r.engagement_rate, r.content_quality_score, r.niche_relevance, r.posting_consistency, r.followers] %}
         {% set kontribs = [r.kontribusi_c1, r.kontribusi_c2, r.kontribusi_c3, r.kontribusi_c4, r.kontribusi_c5] %}
         {% set max_k = kontribs|max %}
-        {% for kv in kontribs %}
-        <td class="text-center small {% if kv == max_k %}text-primary fw-bold{% endif %}">
-          {{ "%.3f"|format(kv) }}
+        {% for i in range(5) %}
+        <td class="text-center small {% if kontribs[i] == max_k %}text-primary fw-bold{% endif %}">
+          <div>
+            {% if i == 0 %}{{ "%.2f"|format(raws[i]) }}%
+            {% elif i == 1 %}{{ "%.1f"|format(raws[i]) }}
+            {% elif i == 2 %}{{ "%.0f"|format(raws[i]) }}
+            {% elif i == 3 %}{{ "%.0f"|format(raws[i]) }}
+            {% else %}{{ "{:,}".format(raws[i]|int) }}
+            {% endif %}
+          </div>
+          <div class="text-muted" style="font-size:10px" title="Kontribusi = bobot × nilai ternormalisasi">w·r = {{ "%.3f"|format(kontribs[i]) }}</div>
         </td>
         {% endfor %}
         <td>

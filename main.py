@@ -188,7 +188,27 @@ def hapus_semua_sesi(db: Session = Depends(get_db)):
 @app.get("/hasil/{sesi_id}", response_class=HTMLResponse)
 def lihat_hasil(request: Request, sesi_id: int, db: Session = Depends(get_db)):
     sesi = db.query(SesiKalkulasi).filter(SesiKalkulasi.id == sesi_id).first()
-    hasil = db.query(HasilRanking).filter(HasilRanking.id_sesi == sesi_id).order_by(HasilRanking.posisi).all()
+    hasil_rows = db.query(HasilRanking).filter(HasilRanking.id_sesi == sesi_id).order_by(HasilRanking.posisi).all()
+    # Merge raw criterion values from KolKandidat (un-normalized C1-C5)
+    usernames = [h.username for h in hasil_rows]
+    kandidat_map = {
+        k.username: k for k in db.query(KolKandidat).filter(KolKandidat.username.in_(usernames)).all()
+    } if usernames else {}
+    hasil = []
+    for h in hasil_rows:
+        k = kandidat_map.get(h.username)
+        hasil.append({
+            "username": h.username, "niche": h.niche,
+            "followers": h.followers, "skor_total": h.skor_total, "posisi": h.posisi,
+            "kontribusi_c1": h.kontribusi_c1, "kontribusi_c2": h.kontribusi_c2,
+            "kontribusi_c3": h.kontribusi_c3, "kontribusi_c4": h.kontribusi_c4,
+            "kontribusi_c5": h.kontribusi_c5,
+            "r_c1": h.r_c1, "r_c2": h.r_c2, "r_c3": h.r_c3, "r_c4": h.r_c4, "r_c5": h.r_c5,
+            "engagement_rate": k.engagement_rate if k else 0,
+            "content_quality_score": k.content_quality_score if k else 0,
+            "niche_relevance": k.niche_relevance if k else 0,
+            "posting_consistency": k.posting_consistency if k else 0,
+        })
     kriteria = db.query(Kriteria).all()
     bobot = sesi.bobot_json if sesi else DEFAULT_BOBOT
     return render(request, "results.html", {

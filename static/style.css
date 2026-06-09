@@ -226,16 +226,37 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; font-weight: 600; }
 
 /* ===== Misc ===== */
 .avatar-circle {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
   background: var(--primary);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
+  font-size: 20px;
   font-weight: 600;
+  object-fit: cover;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+}
+img.avatar-circle {
+  background: #f4f4f4;
+  display: block;
+}
+
+/* Small inline avatar for table rows */
+.avatar-sm {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  background: #f4f4f4;
+  vertical-align: middle;
+  margin-right: 6px;
+  flex-shrink: 0;
 }
 .progress { background: #f3f4f6; border-radius: 6px; height: 6px !important; }
 .progress-bar { background: var(--primary); border-radius: 6px; }

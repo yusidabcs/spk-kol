@@ -43,7 +43,7 @@
       <thead class="table-light">
         <tr>
           <th>#</th><th>Username</th><th>Niche</th><th>Followers</th>
-          <th>Skor Akhir</th><th></th>
+          <th>Skor Kecocokan</th><th></th>
         </tr>
       </thead>
       <tbody>
@@ -52,7 +52,7 @@
           <td>
             <span class="rank-badge {% if r.posisi == 1 %}rank-1{% elif r.posisi == 2 %}rank-2{% elif r.posisi == 3 %}rank-3{% endif %}">{{ r.posisi }}</span>
           </td>
-          <td><a href="https://instagram.com/{{ r.username }}" target="_blank" class="text-decoration-none">@{{ r.username }}</a></td>
+          <td><a href="https://instagram.com/{{ r.username }}" target="_blank" class="text-decoration-none d-inline-flex align-items-center"><img src="https://i.pravatar.cc/64?u={{ r.username }}" alt="" class="avatar-sm rounded-circle">@{{ r.username }}</a></td>
           <td><span class="badge niche-badge">{{ r.niche }}</span></td>
           <td>{{ "{:,}".format(r.followers) }}</td>
           <td>
