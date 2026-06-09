@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Riwayat Sesi — SPK{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h4 class="fw-bold mb-0">Riwayat Sesi Kalkulasi</h4>
+  {% if sesi_list %}
+  <form method="post" action="/riwayat/delete-all" onsubmit="return confirm('Hapus SEMUA riwayat sesi? Aksi ini tidak bisa dibatalkan.');">
+    <button type="submit" class="btn btn-sm btn-outline-danger">Hapus Semua</button>
+  </form>
+  {% endif %}
+</div>
+{% if sesi_list %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-light">
+      <tr><th>#</th><th>Tanggal & Waktu</th><th>Filter Niche</th><th>Kandidat</th><th>Bobot C1–C5</th><th class="text-end" style="width:200px">Aksi</th></tr>
+    </thead>
+    <tbody>
+      {% for s in sesi_list %}
+      <tr>
+        <td>{{ s.id }}</td>
+        <td>{{ s.timestamp.strftime('%d %b %Y %H:%M') if s.timestamp else '-' }}</td>
+        <td><span class="badge niche-badge">{{ s.filter_niche }}</span></td>
+        <td>{{ s.jumlah_kandidat }}</td>
+        <td class="small text-muted">
+          {% if s.bobot_json %}
+          {% for k,v in s.bobot_json.items() %}{{ k }}:{{ (v*100)|round|int }}%{% if not loop.last %} · {% endif %}{% endfor %}
+          {% endif %}
+        </td>
+        <td class="text-end">
+          <div class="d-inline-flex gap-1">
+            <a href="/hasil/{{ s.id }}" class="btn btn-sm btn-outline-primary">Lihat</a>
+            <form method="post" action="/riwayat/delete/{{ s.id }}" class="d-inline"
+                  onsubmit="return confirm('Hapus sesi #{{ s.id }} ({{ s.timestamp.strftime('%d %b %H:%M') if s.timestamp else '' }})?');">
+              <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="card text-center p-5 text-muted">Belum ada sesi kalkulasi.</div>
+{% endif %}
+{% endblock %}

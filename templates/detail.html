@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Detail @{{ kol.username }} — SPK{% endblock %}
+{% block content %}
+<a href="{% if sesi_id %}/hasil/{{ sesi_id }}{% else %}/{% endif %}" class="btn btn-outline-secondary btn-sm mb-3">Kembali</a>
+
+{% if kol %}
+<div class="row g-4">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <div class="avatar-circle mx-auto mb-3">{{ kol.username[0]|upper }}</div>
+        <h5 class="fw-bold">@{{ kol.username }}</h5>
+        <span class="badge niche-badge mb-2">{{ kol.niche }}</span>
+        <p class="text-muted small">{{ kol.bio }}</p>
+        <a href="{{ kol.instagram_url }}" target="_blank" class="btn btn-outline-primary btn-sm w-100">
+          Buka Instagram
+        </a>
+      </div>
+    </div>
+    {% if ranking %}
+    <div class="card shadow-sm mt-3 border-primary">
+      <div class="card-body text-center">
+        <div class="text-muted small mb-1">Peringkat dalam sesi ini</div>
+        <div class="display-4 fw-bold text-primary">#{{ ranking.posisi }}</div>
+        <div class="text-muted small">Skor Akhir</div>
+        <div class="fs-3 fw-bold" title="Nilai WSM: {{ '%.4f'|format(ranking.skor_total) }}">{{ "%.2f"|format(ranking.skor_total * 100) }}%</div>
+        <div class="text-muted" style="font-size:11px">0–100% (WSM)</div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <div class="col-md-8">
+    <div class="card shadow-sm mb-3">
+      <div class="card-header fw-semibold">Metrik Kinerja</div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Followers</div>
+            <div class="fs-5 fw-bold text-primary">{{ "{:,}".format(kol.followers) }}</div>
+          </div>
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Engagement Rate</div>
+            <div class="fs-5 fw-bold text-success">{{ "%.2f"|format(kol.engagement_rate) }}%</div>
+          </div>
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Avg. Likes/Post</div>
+            <div class="fs-5 fw-bold">{{ "{:,}".format(kol.avg_likes|int) }}</div>
+          </div>
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Avg. Komentar/Post</div>
+            <div class="fs-5 fw-bold">{{ "{:,}".format(kol.avg_comments|int) }}</div>
+          </div>
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Post/Bulan</div>
+            <div class="fs-5 fw-bold">{{ kol.posting_consistency }}</div>
+          </div>
+          <div class="col-6 col-md-4 text-center">
+            <div class="text-muted small">Kualitas Konten</div>
+            <div class="fs-5 fw-bold">{{ "%.1f"|format(kol.content_quality_score) }}/5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {% if ranking %}
+    <div class="card shadow-sm">
+      <div class="card-header fw-semibold">Kontribusi Skor per Kriteria</div>
+      <div class="card-body">
+        {% set items = [
+          ("C1","Engagement Rate",ranking.kontribusi_c1,ranking.r_c1),
+          ("C2","Content Quality",ranking.kontribusi_c2,ranking.r_c2),
+          ("C3","Niche Relevance",ranking.kontribusi_c3,ranking.r_c3),
+          ("C4","Posting Consistency",ranking.kontribusi_c4,ranking.r_c4),
+          ("C5","Followers Count",ranking.kontribusi_c5,ranking.r_c5),
+        ] %}
+        {% for kode, nama, kontrib, norm in items %}
+        <div class="mb-3">
+          <div class="d-flex justify-content-between mb-1">
+            <span class="small fw-semibold">{{ kode }}: {{ nama }}</span>
+            <span class="small fw-bold text-primary">{{ "%.4f"|format(kontrib) }}</span>
+          </div>
+          <div class="progress" style="height:12px">
+            <div class="progress-bar" style="width:{{ (kontrib / ranking.skor_total * 100)|round|int if ranking.skor_total > 0 else 0 }}%;background:#0d6efd"></div>
+          </div>
+          <div class="text-muted" style="font-size:11px">Nilai ternormalisasi: {{ "%.4f"|format(norm) }}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
+{% endblock %}

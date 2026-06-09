@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% block title %}Cari KOL — SPK{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h4 class="fw-bold mb-1">Pencarian & Filter KOL</h4>
+    <p class="text-muted small mb-4">Atur filter kandidat dan bobot kriteria, lalu hitung ranking.</p>
+
+    <form method="post" action="/hitung">
+      <div class="card shadow-sm mb-3">
+        <div class="card-header fw-semibold">Filter Kandidat</div>
+        <div class="card-body">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold">Niche / Kategori Konten</label>
+            <select name="niche" class="form-select form-select-sm">
+              <option value="Semua" {% if selected_niche=="Semua" %}selected{% endif %}>Semua Niche</option>
+              {% for n in niches %}
+              <option value="{{ n }}" {% if selected_niche==n %}selected{% endif %}>{{ n }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Min. Followers: <span id="minVal">{{ min_f }}</span></label>
+              <input type="range" name="min_followers" class="form-range" min="0" max="50000" step="1000" value="{{ min_f }}" oninput="document.getElementById('minVal').textContent=Number(this.value).toLocaleString()">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label small fw-semibold">Maks. Followers: <span id="maxVal">{% if max_f == 999999 %}Semua{% else %}{{ max_f }}{% endif %}</span></label>
+              <input type="range" name="max_followers" class="form-range" min="1000" max="999999" step="1000" value="{{ max_f }}" oninput="document.getElementById('maxVal').textContent=this.value==999999?'Semua':Number(this.value).toLocaleString()">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-header fw-semibold d-flex justify-content-between">
+          <span>Bobot Kriteria</span>
+          <span id="totalBobot" class="badge bg-success">100%</span>
+        </div>
+        <div class="card-body">
+          <div class="row g-3">
+            {% for k in kriteria %}
+            <div class="col-md-6">
+              <div class="d-flex justify-content-between">
+                <label class="form-label small fw-semibold mb-1">
+                  {{ k.kode }}: {{ k.nama }}
+                  <span class="text-muted fw-normal">({{ k.satuan }})</span>
+                </label>
+                <span class="small fw-bold text-primary" id="val_{{ k.kode }}">{{ (k.bobot_default*100)|round|int }}%</span>
+              </div>
+              <input type="range" name="{{ k.kode }}" class="form-range bobot-slider"
+                     min="0" max="1" step="0.05"
+                     value="{{ k.bobot_default }}"
+                     data-kode="{{ k.kode }}"
+                     oninput="updateBobot('{{ k.kode }}', this.value)">
+              <div class="text-muted" style="font-size:11px">{{ k.deskripsi }}</div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="alert alert-info py-2 px-3 small mb-0 mt-3" id="bobotAlert" style="display:none">
+            Total bobot akan dinormalisasi otomatis ke 100%.
+          </div>
+        </div>
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary w-100">
+            Hitung Ranking
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+const bobotValues = {};
+document.querySelectorAll('.bobot-slider').forEach(s => { bobotValues[s.dataset.kode] = parseFloat(s.value); });
+function updateBobot(kode, val) {
+  bobotValues[kode] = parseFloat(val);
+  document.getElementById('val_'+kode).textContent = Math.round(val*100) + '%';
+  const total = Object.values(bobotValues).reduce((a,b)=>a+b,0);
+  const pct = Math.round(total*100);
+  const el = document.getElementById('totalBobot');
+  el.textContent = pct + '%';
+  el.className = 'badge ' + (Math.abs(pct-100) < 2 ? 'bg-success' : 'bg-warning text-dark');
+  document.getElementById('bobotAlert').style.display = Math.abs(pct-100) >= 2 ? 'block' : 'none';
+}
+</script>
+{% endblock %}
