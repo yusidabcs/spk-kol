@@ -4,7 +4,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <div>
     <h4 class="fw-bold mb-0">Riwayat Pencarian</h4>
-    <small class="text-muted">Setiap kali kamu cari Konten Creator, hasilnya tersimpan di sini.</small>
+    <small class="text-muted">Setiap kali kamu cari Content Creator, hasilnya tersimpan di sini.</small>
   </div>
   {% if sesi_list %}
   <form method="post" action="/riwayat/delete-all" onsubmit="return confirm('Hapus SEMUA riwayat pencarian? Aksi ini tidak bisa dibatalkan.');">
@@ -16,7 +16,7 @@
 <div class="table-responsive">
   <table class="table table-hover align-middle">
     <thead class="table-light">
-      <tr><th>#</th><th>Tanggal &amp; Waktu</th><th>Niche</th><th>Konten Creator</th><th>Pengaturan Bobot</th><th class="text-end" style="width:200px">Aksi</th></tr>
+      <tr><th>#</th><th>Tanggal &amp; Waktu</th><th>Niche</th><th>Content Creator</th><th>Pengaturan Bobot</th><th class="text-end" style="width:200px">Aksi</th></tr>
     </thead>
     <tbody>
       {% for s in sesi_list %}
@@ -48,7 +48,7 @@
 <div class="card border-0 bg-light text-center p-5">
   <div class="mb-2" style="font-size:48px">📋</div>
   <p class="mb-3 text-muted">Belum ada pencarian tersimpan.</p>
-  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Mulai Cari Konten Creator</a>
+  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Mulai Cari Content Creator</a>
 </div>
 {% endif %}
 {% endblock %}

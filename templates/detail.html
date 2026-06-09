@@ -69,7 +69,7 @@
 
     {% if ranking %}
     <div class="card shadow-sm">
-      <div class="card-header fw-semibold">Kenapa Skor Konten Creator Ini Sebesar Itu?</div>
+      <div class="card-header fw-semibold">Kenapa Skor Content Creator Ini Sebesar Itu?</div>
       <div class="card-body">
         {% set items = [
           ("C1","Engagement Rate",ranking.kontribusi_c1,ranking.r_c1),
@@ -87,7 +87,7 @@
           <div class="progress" style="height:12px">
             <div class="progress-bar" style="width:{{ (kontrib / ranking.skor_total * 100)|round|int if ranking.skor_total > 0 else 0 }}%;background:#0d6efd"></div>
           </div>
-          <div class="text-muted" style="font-size:11px">Nilai dibanding Konten Creator lain: {{ "%.0f"|format(norm * 100) }}% dari yang terbaik</div>
+          <div class="text-muted" style="font-size:11px">Nilai dibanding Content Creator lain: {{ "%.0f"|format(norm * 100) }}% dari yang terbaik</div>
         </div>
         {% endfor %}
       </div>

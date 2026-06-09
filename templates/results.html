@@ -4,13 +4,13 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-start mb-3">
   <div>
-    <h4 class="fw-bold mb-0">Hasil Rekomendasi Konten Creator</h4>
+    <h4 class="fw-bold mb-0">Hasil Rekomendasi Content Creator</h4>
     {% if sesi %}
     <small class="text-muted d-block">
       Pencarian #{{ sesi.id }} &nbsp;·&nbsp;
       {% if sesi.timestamp %}{{ sesi.timestamp.strftime('%d %b %Y %H:%M') }}{% endif %} &nbsp;·&nbsp;
       Niche: {{ filter_niche }} &nbsp;·&nbsp;
-      {{ sesi.jumlah_kandidat }} Konten Creator diperingkat
+      {{ sesi.jumlah_kandidat }} Content Creator diperingkat
     </small>
     {% endif %}
   </div>
@@ -59,7 +59,7 @@
 
 {# ===== TABEL LENGKAP DENGAN MODE TOGGLE ===== #}
 <div class="d-flex justify-content-between align-items-center mb-2">
-  <h5 class="fw-bold mb-0">Daftar Lengkap ({{ hasil|length }} Konten Creator)</h5>
+  <h5 class="fw-bold mb-0">Daftar Lengkap ({{ hasil|length }} Content Creator)</h5>
   <div class="btn-group btn-group-sm" role="group" aria-label="Mode tampilan">
     <input type="radio" class="btn-check" name="viewMode" id="modeSimple" value="simple" checked>
     <label class="btn btn-outline-primary" for="modeSimple">🪶 Sederhana</label>
@@ -78,7 +78,7 @@
     <thead class="table-light">
       <tr>
         <th style="width:50px">#</th>
-        <th>Konten Creator</th>
+        <th>Content Creator</th>
         <th>Niche</th>
         <th>Followers</th>
         <th>Skor Kecocokan</th>
@@ -124,7 +124,7 @@
             {% else %}{{ "{:,}".format(raws[i]|int) }}
             {% endif %}
           </div>
-          <div class="text-muted" style="font-size:10px" title="Sumbangan kriteria ini ke skor akhir Konten Creator">+{{ "%.3f"|format(kontribs[i]) }}</div>
+          <div class="text-muted" style="font-size:10px" title="Sumbangan kriteria ini ke skor akhir Content Creator">+{{ "%.3f"|format(kontribs[i]) }}</div>
         </td>
         {% endfor %}
         <td>
@@ -143,7 +143,7 @@
 // Highlight kontribusi tertinggi (tooltip)
 document.querySelectorAll('td.col-kriteria').forEach(td => {
   if(td.classList.contains('fw-bold')) {
-    td.title = 'Kriteria yang paling berpengaruh ke skor Konten Creator ini';
+    td.title = 'Kriteria yang paling berpengaruh ke skor Content Creator ini';
   }
 });
 

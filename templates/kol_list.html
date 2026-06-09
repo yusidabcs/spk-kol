@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}Semua Konten Creator — SPK{% endblock %}
+{% block title %}Semua Content Creator — SPK{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
   <div>
-    <h4 class="fw-bold mb-1">Semua Konten Creator di Database</h4>
-    <p class="text-muted small mb-0">Daftar <strong>{{ kol_list|length }}</strong> Konten Creator (sebelum di-ranking). Untuk dapat rekomendasi, klik <a href="/cari">Cari Konten Creator</a>.</p>
+    <h4 class="fw-bold mb-1">Semua Content Creator di Database</h4>
+    <p class="text-muted small mb-0">Daftar <strong>{{ kol_list|length }}</strong> Content Creator (sebelum di-ranking). Untuk dapat rekomendasi, klik <a href="/cari">Cari Content Creator</a>.</p>
   </div>
 </div>
 
@@ -94,7 +94,7 @@
           </td>
         </tr>
         {% else %}
-        <tr><td colspan="12" class="text-center text-muted py-4">Tidak ada Konten Creator yang sesuai filter.</td></tr>
+        <tr><td colspan="12" class="text-center text-muted py-4">Tidak ada Content Creator yang sesuai filter.</td></tr>
         {% endfor %}
       </tbody>
     </table>

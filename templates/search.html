@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}Cari Konten Creator — SPK{% endblock %}
+{% block title %}Cari Content Creator — SPK{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-8">
-    <h4 class="fw-bold mb-1">Cari Konten Creator Bali untuk Bisnismu</h4>
+    <h4 class="fw-bold mb-1">Cari Content Creator Bali untuk Bisnismu</h4>
     <p class="text-muted small mb-4">
       Atur filter dan pengaturan di bawah, lalu klik tombol untuk mendapat rekomendasi.
       Tidak tahu mau atur apa? <strong>Pakai preset siap pakai</strong> ⬇️
@@ -28,16 +28,18 @@
       </div>
 
       <div class="card shadow-sm mb-3">
-        <div class="card-header fw-semibold">Filter Konten Creator</div>
+        <div class="card-header fw-semibold">Filter Content Creator</div>
         <div class="card-body">
           <div class="mb-3">
-            <label class="form-label small fw-semibold">Niche / Kategori Konten</label>
-            <select name="niche" class="form-select form-select-sm">
-              <option value="Semua" {% if selected_niche=="Semua" %}selected{% endif %}>Semua Niche</option>
+            <label class="form-label small fw-semibold d-block mb-2">Kategori Content Creator</label>
+            <div class="d-flex flex-wrap gap-2">
+              <input type="radio" class="btn-check" name="niche" id="niche_semua" value="Semua" {% if selected_niche=="Semua" %}checked{% endif %}>
+              <label class="btn btn-sm btn-outline-primary rounded-pill px-3" for="niche_semua">🌐 Semua Niche</label>
               {% for n in niches %}
-              <option value="{{ n }}" {% if selected_niche==n %}selected{% endif %}>{{ n }}</option>
+              <input type="radio" class="btn-check" name="niche" id="niche_{{ loop.index }}" value="{{ n }}" {% if selected_niche==n %}checked{% endif %}>
+              <label class="btn btn-sm btn-outline-primary rounded-pill px-3" for="niche_{{ loop.index }}">{{ n }}</label>
               {% endfor %}
-            </select>
+            </div>
           </div>
           <div class="row g-3">
             <div class="col-md-6">
@@ -53,21 +55,32 @@
       </div>
 
       <div class="card shadow-sm">
-        <div class="card-header fw-semibold d-flex justify-content-between">
-          <span>Apa yang Paling Penting Buat Kamu?</span>
-          <span id="totalBobot" class="badge bg-success">100%</span>
-        </div>
+        <button type="button" class="card-header fw-semibold d-flex justify-content-between align-items-center bg-white border-0 w-100"
+                data-bs-toggle="collapse" data-bs-target="#bobotPanel" aria-expanded="false" aria-controls="bobotPanel"
+                style="cursor:pointer">
+          <span>
+            <span class="me-2">⚙️</span>
+            Pengaturan Lanjutan: Apa yang Paling Penting Buat Kamu?
+            <small class="text-muted fw-normal ms-1">(opsional)</small>
+          </span>
+          <span class="d-flex align-items-center gap-2">
+            <span id="totalBobot" class="badge bg-success">100%</span>
+            <span class="collapse-chevron" aria-hidden="true">▾</span>
+          </span>
+        </button>
+        <div class="collapse" id="bobotPanel">
         <div class="card-body">
           <p class="small text-muted mb-3">
-            Geser ke kanan kalau kriteria itu penting buatmu. Geser ke kiri kalau tidak terlalu penting.
+            Sudah pakai preset di atas? <strong>Boleh skip bagian ini</strong> — preset sudah mengatur otomatis.
+            Kalau mau atur manual: geser ke kanan kalau kriteria itu penting, ke kiri kalau tidak terlalu penting.
             <strong>Total harus 100%</strong> (sistem akan menyesuaikan otomatis).
           </p>
           {# Penjelasan ramah untuk user awam — analogi ke konteks UMKM #}
           {% set penjelasan = {
             'C1': 'Dari 100 follower, berapa rata-rata yang nge-like atau komen tiap post-nya. Makin tinggi = makin aktif & responsif audience-nya.',
             'C2': 'Seberapa bagus visual foto/video dan caption-nya. Skor 1 (kurang) sampai 5 (sangat bagus). Konten estetik bantu branding bisnismu kelihatan profesional.',
-            'C3': 'Seberapa cocok niche akun-nya dengan F&B Bali. Skor 1 (kurang relevan) sampai 5 (sangat relevan). Konten Creator food specialist biasanya skor tinggi.',
-            'C4': 'Berapa kali dia upload post per bulan. Konten Creator yang konsisten posting biasanya lebih engaging & follower-nya lebih aktif.',
+            'C3': 'Seberapa cocok niche akun-nya dengan F&B Bali. Skor 1 (kurang relevan) sampai 5 (sangat relevan). Content Creator food specialist biasanya skor tinggi.',
+            'C4': 'Berapa kali dia upload post per bulan. Content Creator yang konsisten posting biasanya lebih engaging & follower-nya lebih aktif.',
             'C5': 'Total pengikut akun Instagram-nya. Followers besar = jangkauan luas, tapi belum tentu engagement-nya tinggi.',
           } %}
           <div class="row g-3">
@@ -98,9 +111,10 @@
             Total kepentingan akan disamakan ke 100% otomatis.
           </div>
         </div>
+        </div><!-- /#bobotPanel -->
         <div class="card-footer">
           <button type="submit" class="btn btn-primary w-100 btn-lg">
-            🔍 Cari Rekomendasi Konten Creator
+            🔍 Cari Rekomendasi Content Creator
           </button>
         </div>
       </div>

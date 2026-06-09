@@ -8,16 +8,16 @@
   <div class="card-body p-4">
     <div class="row align-items-center g-3">
       <div class="col-md-8">
-        <h3 class="fw-bold mb-2">Temukan Konten Creator Bali yang Paling Cocok untuk Promosi Warung & Resto-mu 🍜</h3>
+        <h3 class="fw-bold mb-2">Temukan Content Creator Bali yang Paling Cocok untuk Promosi Warung & Resto-mu 🍜</h3>
         <p class="mb-0 text-muted">
-          Sistem ini bantu kamu memilih <strong>Konten Creator F&amp;B Bali</strong> berdasarkan
+          Sistem ini bantu kamu memilih <strong>Content Creator F&amp;B Bali</strong> berdasarkan
           engagement, kualitas konten, dan kecocokan niche — bukan asal banyak followers.
           Setelah dapat rekomendasi, kamu bisa langsung DM mereka di Instagram.
         </p>
       </div>
       <div class="col-md-4 text-md-end text-center">
         <a href="/cari" class="btn btn-primary btn-lg shadow-sm">
-          Cari Konten Creator Sekarang &rarr;
+          Cari Content Creator Sekarang &rarr;
         </a>
       </div>
     </div>
@@ -40,7 +40,7 @@
       <div class="card-body text-center">
         <div class="step-num mx-auto mb-2">2</div>
         <h6 class="fw-bold">Sistem Ranking Otomatis</h6>
-        <p class="small text-muted mb-0">Dari {{ total_kol }} Konten Creator, sistem akan urutkan dari yang paling cocok ke kurang cocok untuk bisnismu.</p>
+        <p class="small text-muted mb-0">Dari {{ total_kol }} Content Creator, sistem akan urutkan dari yang paling cocok ke kurang cocok untuk bisnismu.</p>
       </div>
     </div>
   </div>
@@ -49,7 +49,7 @@
       <div class="card-body text-center">
         <div class="step-num mx-auto mb-2">3</div>
         <h6 class="fw-bold">Pilih &amp; DM Langsung</h6>
-        <p class="small text-muted mb-0">Lihat detail tiap Konten Creator, lalu klik tombol Instagram untuk hubungi mereka langsung lewat DM.</p>
+        <p class="small text-muted mb-0">Lihat detail tiap Content Creator, lalu klik tombol Instagram untuk hubungi mereka langsung lewat DM.</p>
       </div>
     </div>
   </div>
@@ -58,7 +58,7 @@
 {% if preview %}
 <div class="card shadow-sm">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-semibold">Pencarian Terakhirmu — 5 Konten Creator Teratas</span>
+    <span class="fw-semibold">Pencarian Terakhirmu — 5 Content Creator Teratas</span>
     {% if last_sesi %}
     <small class="text-muted">{{ last_sesi.filter_niche }} · {{ last_sesi.timestamp.strftime('%d %b %Y %H:%M') }}</small>
     {% endif %}
@@ -104,8 +104,8 @@
 {% else %}
 <div class="card border-0 bg-light text-center p-5">
   <div class="mb-2" style="font-size:48px">🔍</div>
-  <p class="mb-3 text-muted">Belum ada pencarian. Yuk mulai cari Konten Creator pertamamu!</p>
-  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Cari Konten Creator Sekarang</a>
+  <p class="mb-3 text-muted">Belum ada pencarian. Yuk mulai cari Content Creator pertamamu!</p>
+  <a href="/cari" class="btn btn-primary mx-auto" style="width:fit-content">Cari Content Creator Sekarang</a>
 </div>
 {% endif %}
 {% endblock %}

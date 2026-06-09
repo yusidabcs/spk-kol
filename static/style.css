@@ -234,6 +234,15 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; font-weight: 600; }
   font-size: 20px; font-weight: 700;
 }
 
+/* Collapse chevron rotation */
+.collapse-chevron {
+  display: inline-block;
+  transition: transform .2s ease;
+  font-size: 14px;
+  color: #8a96a3;
+}
+[aria-expanded="true"] .collapse-chevron { transform: rotate(180deg); color: var(--primary); }
+
 /* Help icon ⓘ pada label kriteria */
 .help-icon {
   font-size: 14px;
