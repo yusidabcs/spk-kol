@@ -234,6 +234,22 @@ h1, h2, h3, h4, h5, h6 { letter-spacing: -0.015em; font-weight: 600; }
   font-size: 20px; font-weight: 700;
 }
 
+/* Help icon ⓘ pada label kriteria */
+.help-icon {
+  font-size: 14px;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: #8a96a3;
+  cursor: help;
+  vertical-align: baseline;
+}
+.help-icon:hover { color: var(--primary); }
+
+/* Mode toggle Sederhana vs Detail */
+.ranking-table.view-simple .col-kriteria { display: none; }
+.ranking-table.view-detail .col-kriteria { display: table-cell; }
+
 /* Preset chips */
 .preset-chip {
   cursor: pointer;

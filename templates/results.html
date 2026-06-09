@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros.html" import label_kualitatif, naratif_rekomendasi %}
 {% block title %}Hasil Rekomendasi — SPK KOL{% endblock %}
 {% block content %}
 <div class="d-flex justify-content-between align-items-start mb-3">
@@ -11,45 +12,78 @@
       Niche: {{ filter_niche }} &nbsp;·&nbsp;
       {{ sesi.jumlah_kandidat }} selebgram diperingkat
     </small>
-    <small class="text-muted d-block mt-1">
-      <strong>Skor Kecocokan (0–100%)</strong> = hasil Weighted Sum Model — gabungan 5 kriteria sesuai bobot. Makin tinggi, makin direkomendasikan.
-    </small>
-    <small class="text-muted d-block">
-      Tiap kolom kriteria menampilkan: <strong>nilai asli</strong> (baris atas) &middot; <span style="font-size:10px">sumbangan ke skor akhir</span> (baris bawah, kecil).
-    </small>
     {% endif %}
   </div>
   <a href="/cari" class="btn btn-outline-secondary btn-sm">← Atur Ulang &amp; Cari Lagi</a>
 </div>
 
-<!-- Bobot summary -->
-<div class="card mb-3 border-0 bg-light">
-  <div class="card-body py-2">
-    <div class="d-flex flex-wrap gap-4 justify-content-center">
-      {% if bobot %}
-      {% for k in kriteria %}
-      <div class="text-center">
-        <div class="small text-muted">{{ k.kode }}</div>
-        <div class="fw-semibold">{{ (bobot[k.kode]*100)|round|int if bobot[k.kode] is defined else (bobot.get(k.kode,0)*100)|round|int }}%</div>
-        <div style="font-size:10px" class="text-muted">{{ k.nama }}</div>
+{# ===== TOP 3 REKOMENDASI CARDS ===== #}
+{% if hasil|length >= 1 %}
+<div class="mb-4">
+  <h5 class="fw-bold mb-3">🏆 Top {{ [hasil|length, 3]|min }} Rekomendasi untuk Bisnismu</h5>
+  <div class="row g-3">
+    {% for r in hasil[:3] %}
+    <div class="col-md-4">
+      <div class="card h-100 shadow-sm border-{% if loop.index == 1 %}warning{% elif loop.index == 2 %}secondary{% else %}danger{% endif %}" style="border-width:2px">
+        <div class="card-body">
+          <div class="d-flex align-items-start gap-3 mb-3">
+            <div class="position-relative">
+              <img src="https://i.pravatar.cc/200?u={{ r.username }}" alt="" class="rounded-circle" style="width:64px;height:64px;object-fit:cover;aspect-ratio:1/1">
+              <span class="position-absolute top-0 start-100 translate-middle rank-badge {% if loop.index == 1 %}rank-1{% elif loop.index == 2 %}rank-2{% else %}rank-3{% endif %}">{{ loop.index }}</span>
+            </div>
+            <div class="flex-grow-1 min-w-0">
+              <a href="https://instagram.com/{{ r.username }}" target="_blank" class="text-decoration-none fw-bold text-dark d-block text-truncate">@{{ r.username }}</a>
+              <span class="badge niche-badge mt-1">{{ r.niche }}</span>
+              <div class="small text-muted mt-1">{{ "{:,}".format(r.followers) }} followers</div>
+            </div>
+          </div>
+          <div class="d-flex align-items-center gap-2 mb-2">
+            {{ label_kualitatif(r.skor_total) }}
+            <strong class="text-primary">{{ "%.1f"|format(r.skor_total * 100) }}%</strong>
+            <small class="text-muted">skor kecocokan</small>
+          </div>
+          <p class="small mb-3" style="line-height:1.5">{{ naratif_rekomendasi(r) }}</p>
+          <div class="d-grid gap-2">
+            <a href="{{ 'https://instagram.com/' ~ r.username }}" target="_blank" class="btn btn-primary btn-sm">📩 Hubungi via Instagram</a>
+            {% if sesi %}
+            <a href="/detail/{{ r.username }}?sesi_id={{ sesi.id }}" class="btn btn-outline-secondary btn-sm">Lihat Detail Selengkapnya</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-      {% endfor %}
-      {% endif %}
     </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+{# ===== TABEL LENGKAP DENGAN MODE TOGGLE ===== #}
+<div class="d-flex justify-content-between align-items-center mb-2">
+  <h5 class="fw-bold mb-0">Daftar Lengkap ({{ hasil|length }} selebgram)</h5>
+  <div class="btn-group btn-group-sm" role="group" aria-label="Mode tampilan">
+    <input type="radio" class="btn-check" name="viewMode" id="modeSimple" value="simple" checked>
+    <label class="btn btn-outline-primary" for="modeSimple">🪶 Sederhana</label>
+    <input type="radio" class="btn-check" name="viewMode" id="modeDetail" value="detail">
+    <label class="btn btn-outline-primary" for="modeDetail">🔬 Detail Perhitungan</label>
   </div>
 </div>
 
+<small class="text-muted d-block mb-3 view-detail-hint" style="display:none !important">
+  <strong>Mode Detail aktif.</strong> Tiap kolom kriteria menampilkan: <strong>nilai asli</strong> (baris atas) &middot; sumbangan ke skor akhir (baris bawah, kecil).
+  Bobot pencarian: {% if bobot %}{% for k in kriteria %}{{ k.kode }}={{ (bobot[k.kode]*100)|round|int if bobot[k.kode] is defined else (bobot.get(k.kode,0)*100)|round|int }}%{% if not loop.last %} · {% endif %}{% endfor %}{% endif %}
+</small>
+
 <div class="table-responsive">
-  <table class="table table-hover align-middle" id="rankingTable">
+  <table class="table table-hover align-middle ranking-table view-simple" id="rankingTable">
     <thead class="table-light">
       <tr>
         <th style="width:50px">#</th>
-        <th>Username</th>
+        <th>Selebgram</th>
         <th>Niche</th>
         <th>Followers</th>
         <th>Skor Kecocokan</th>
         {% for k in kriteria %}
-        <th class="text-center small">{{ k.kode }}<br><span style="font-size:10px;font-weight:normal">{{ k.nama.split()[0] }}</span></th>
+        <th class="text-center small col-kriteria">{{ k.kode }}<br><span style="font-size:10px;font-weight:normal">{{ k.nama.split()[0] }}</span></th>
         {% endfor %}
         <th></th>
       </tr>
@@ -69,18 +103,19 @@
         <td><span class="badge niche-badge">{{ r.niche }}</span></td>
         <td>{{ "{:,}".format(r.followers) }}</td>
         <td>
-          <div class="d-flex align-items-center gap-2">
-            <div class="progress" style="width:100px">
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            {{ label_kualitatif(r.skor_total) }}
+            <div class="progress" style="width:80px">
               <div class="progress-bar bg-primary" style="width:{{ (r.skor_total * 100)|round|int }}%"></div>
             </div>
-            <strong title="Nilai WSM: {{ '%.4f'|format(r.skor_total) }}">{{ "%.2f"|format(r.skor_total * 100) }}%</strong>
+            <strong class="small" title="Nilai WSM: {{ '%.4f'|format(r.skor_total) }}">{{ "%.1f"|format(r.skor_total * 100) }}%</strong>
           </div>
         </td>
         {% set raws = [r.engagement_rate, r.content_quality_score, r.niche_relevance, r.posting_consistency, r.followers] %}
         {% set kontribs = [r.kontribusi_c1, r.kontribusi_c2, r.kontribusi_c3, r.kontribusi_c4, r.kontribusi_c5] %}
         {% set max_k = kontribs|max %}
         {% for i in range(5) %}
-        <td class="text-center small {% if kontribs[i] == max_k %}text-primary fw-bold{% endif %}">
+        <td class="text-center small col-kriteria {% if kontribs[i] == max_k %}text-primary fw-bold{% endif %}">
           <div>
             {% if i == 0 %}{{ "%.2f"|format(raws[i]) }}%
             {% elif i == 1 %}{{ "%.1f"|format(raws[i]) }}
@@ -105,10 +140,28 @@
 {% endblock %}
 {% block scripts %}
 <script>
-document.querySelectorAll('td.text-center').forEach(td => {
+// Highlight kontribusi tertinggi (tooltip)
+document.querySelectorAll('td.col-kriteria').forEach(td => {
   if(td.classList.contains('fw-bold')) {
     td.title = 'Kriteria yang paling berpengaruh ke skor selebgram ini';
   }
+});
+
+// Mode toggle: Sederhana vs Detail
+const table = document.getElementById('rankingTable');
+const hint = document.querySelector('.view-detail-hint');
+document.querySelectorAll('input[name="viewMode"]').forEach(input => {
+  input.addEventListener('change', () => {
+    if (input.value === 'detail') {
+      table.classList.remove('view-simple');
+      table.classList.add('view-detail');
+      hint.style.display = 'block';
+    } else {
+      table.classList.add('view-simple');
+      table.classList.remove('view-detail');
+      hint.style.display = 'none';
+    }
+  });
 });
 </script>
 {% endblock %}

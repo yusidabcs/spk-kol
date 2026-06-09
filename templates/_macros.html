@@ -1,0 +1,24 @@
+{# ===== Reusable Jinja macros — UI helpers ===== #}
+
+{# Label kualitatif berdasarkan skor 0..1 (WSM) #}
+{%- macro label_kualitatif(skor) -%}
+  {%- set s = (skor * 100)|round|int -%}
+  {%- if s >= 80 -%}<span class="badge bg-success">Sangat Cocok</span>
+  {%- elif s >= 60 -%}<span class="badge bg-primary">Cocok</span>
+  {%- elif s >= 40 -%}<span class="badge bg-warning text-dark">Cukup Cocok</span>
+  {%- else -%}<span class="badge bg-secondary">Kurang Cocok</span>
+  {%- endif -%}
+{%- endmacro -%}
+
+{# Naratif rekomendasi otomatis: ambil 2 kontribusi tertinggi #}
+{%- macro naratif_rekomendasi(r) -%}
+  {%- set kontribs = [
+    {'label': 'engagement rate-nya tinggi', 'v': r.kontribusi_c1|float, 'detail': '%.2f'|format(r.engagement_rate|float) ~ '%'},
+    {'label': 'kualitas kontennya bagus', 'v': r.kontribusi_c2|float, 'detail': '%.1f'|format(r.content_quality_score|float) ~ '/5'},
+    {'label': 'niche-nya cocok dengan F&B', 'v': r.kontribusi_c3|float, 'detail': '%.1f'|format(r.niche_relevance|float) ~ '/5'},
+    {'label': 'posting-nya konsisten', 'v': r.kontribusi_c4|float, 'detail': (r.posting_consistency|int)|string ~ ' post/bulan'},
+    {'label': 'audience-nya besar', 'v': r.kontribusi_c5|float, 'detail': '{:,}'.format(r.followers|int) ~ ' followers'},
+  ] -%}
+  {%- set top = kontribs | sort(attribute='v', reverse=true) | list -%}
+  Direkomendasikan karena <strong>{{ top[0].label }}</strong> ({{ top[0].detail }}) dan <strong>{{ top[1].label }}</strong> ({{ top[1].detail }}).
+{%- endmacro -%}

@@ -62,6 +62,14 @@
             Geser ke kanan kalau kriteria itu penting buatmu. Geser ke kiri kalau tidak terlalu penting.
             <strong>Total harus 100%</strong> (sistem akan menyesuaikan otomatis).
           </p>
+          {# Penjelasan ramah untuk user awam — analogi ke konteks UMKM #}
+          {% set penjelasan = {
+            'C1': 'Dari 100 follower, berapa rata-rata yang nge-like atau komen tiap post-nya. Makin tinggi = makin aktif & responsif audience-nya.',
+            'C2': 'Seberapa bagus visual foto/video dan caption-nya. Skor 1 (kurang) sampai 5 (sangat bagus). Konten estetik bantu branding bisnismu kelihatan profesional.',
+            'C3': 'Seberapa cocok niche akun-nya dengan F&B Bali. Skor 1 (kurang relevan) sampai 5 (sangat relevan). Selebgram food specialist biasanya skor tinggi.',
+            'C4': 'Berapa kali dia upload post per bulan. Selebgram yang konsisten posting biasanya lebih engaging & follower-nya lebih aktif.',
+            'C5': 'Total pengikut akun Instagram-nya. Followers besar = jangkauan luas, tapi belum tentu engagement-nya tinggi.',
+          } %}
           <div class="row g-3">
             {% for k in kriteria %}
             <div class="col-md-6">
@@ -69,6 +77,11 @@
                 <label class="form-label small fw-semibold mb-1">
                   {{ k.nama }}
                   <span class="text-muted fw-normal">({{ k.satuan }})</span>
+                  <button type="button" class="btn btn-sm p-0 ms-1 text-muted help-icon" tabindex="-1"
+                          data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top"
+                          title="{{ penjelasan[k.kode] }}">
+                    ⓘ
+                  </button>
                 </label>
                 <span class="small fw-bold text-primary" id="val_{{ k.kode }}">{{ (k.bobot_default*100)|round|int }}%</span>
               </div>
@@ -77,7 +90,7 @@
                      value="{{ k.bobot_default }}"
                      data-kode="{{ k.kode }}"
                      oninput="updateBobot('{{ k.kode }}', this.value)">
-              <div class="text-muted" style="font-size:11px">{{ k.deskripsi }}</div>
+              <div class="text-muted" style="font-size:11px">{{ penjelasan[k.kode] }}</div>
             </div>
             {% endfor %}
           </div>
@@ -129,6 +142,11 @@ document.querySelectorAll('.preset-chip').forEach(chip => {
     document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
     chip.classList.add('active');
   });
+});
+
+// Inisialisasi Bootstrap tooltip untuk ikon ⓘ
+document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(el => {
+  new bootstrap.Tooltip(el);
 });
 </script>
 {% endblock %}

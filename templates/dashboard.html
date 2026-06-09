@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "_macros.html" import label_kualitatif %}
 {% block title %}Dashboard — SPK KOL{% endblock %}
 {% block content %}
 
@@ -80,8 +81,9 @@
           <td><span class="badge niche-badge">{{ r.niche }}</span></td>
           <td>{{ "{:,}".format(r.followers) }}</td>
           <td>
-            <div class="d-flex align-items-center gap-2">
-              <div class="progress flex-grow-1">
+            <div class="d-flex align-items-center gap-2 flex-wrap">
+              {{ label_kualitatif(r.skor_total) }}
+              <div class="progress flex-grow-1" style="min-width:60px">
                 <div class="progress-bar bg-primary" style="width:{{ (r.skor_total * 100)|round|int }}%"></div>
               </div>
               <span class="fw-semibold small" title="Nilai WSM: {{ '%.4f'|format(r.skor_total) }}">{{ "%.1f"|format(r.skor_total * 100) }}%</span>
